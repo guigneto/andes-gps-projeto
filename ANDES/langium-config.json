@@ -1,0 +1,12 @@
+{
+    "projectName": "Andes",
+    "languages": [{
+        "id": "andes",
+        "grammar": "src/language/andes.langium",
+        "fileExtensions": [".andes"],
+        "textMate": {
+            "out": "syntaxes/andes.tmLanguage.json"
+        }
+    }],
+    "out": "src/language/generated"
+}
