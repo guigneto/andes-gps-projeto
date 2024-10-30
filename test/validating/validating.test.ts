@@ -3,16 +3,16 @@ import { EmptyFileSystem, type LangiumDocument } from "langium";
 import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
 import type { Diagnostic } from "vscode-languageserver-types";
-import { createBb8Services } from "../../src/language/bb-8-module.js";
+import { createAndesServices } from "../../src/language/andes-module.js";
 import { Model, isModel } from "../../src/language/generated/ast.js";
 
-let services: ReturnType<typeof createBb8Services>;
+let services: ReturnType<typeof createAndesServices>;
 let parse:    ReturnType<typeof parseHelper<Model>>;
 let document: LangiumDocument<Model> | undefined;
 
 beforeAll(async () => {
-    services = createBb8Services(EmptyFileSystem);
-    const doParse = parseHelper<Model>(services.Bb8);
+    services = createAndesServices(EmptyFileSystem);
+    const doParse = parseHelper<Model>(services.Andes);
     parse = (input: string) => doParse(input, { validation: true });
 
     // activate the following if your linking test requires elements from a built-in library, for example

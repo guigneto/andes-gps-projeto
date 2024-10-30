@@ -1,18 +1,90 @@
 grammar Andes
+import 'terminals'
+import 'helpers'
 
-entry Model:
-    (persons+=Person | greetings+=Greeting)*;
+type Requirement=(FunctionalRequirement | NonFunctionalRequirement);
 
-Person:
-    'person' name=ID;
+entry Model:    
+    
+    (   project = Project
+        |components+=(Requirements|UseCase|Actor)
+    )*;
 
-Greeting:
-    'Hello' person=[Person:ID] '!';
+Project:
+        'overview' id=ID '{'
+            (  Name
+               |Description
+               |'purpose' ':' purpose= STRING
+               |'miniworld' ':' miniworld= STRING
+            )* 
+        '}'
+; 
 
-hidden terminal WS: /\s+/;
-terminal ID: /[_a-zA-Z][\w_]*/;
-terminal INT returns number: /[0-9]+/;
-terminal STRING: /"(\\.|[^"\\])*"|'(\\.|[^'\\])*'/;
 
-hidden terminal ML_COMMENT: /\/\*[\s\S]*?\*\//;
-hidden terminal SL_COMMENT: /\/\/[^\n\r]*/;
+Requirements: 
+    'requirements' id=ID '{'
+        (Name
+        |Description
+        |requirements+=(FunctionalRequirement|NonFunctionalRequirement|BussinesRule))*
+    '}'
+;  
+
+
+FunctionalRequirement:
+    'functional_requirement' id=ID '{'
+        (Description
+        |Priority 
+        |'depend'':' depend= [Requirement:QualifiedName](',' depends+=[Requirement:QualifiedName])?  
+        )*
+    '}'
+;
+
+NonFunctionalRequirement:
+    'non_functional_requirement' id=ID '{'
+        ( Description
+        |Priority  
+        |'depend'':' depend= [Requirement:QualifiedName]*(',' depends+=[Requirement:QualifiedName])?
+        )*
+    '}'
+;
+
+BussinesRule:
+    'bussines_rule' id=ID '{'
+        ( Description
+        | Priority 
+        | 'depend'':' depend= [Requirement:QualifiedName]*(',' depends+=[Requirement:QualifiedName])?
+        )*
+    '}'
+;
+
+UseCase:
+    'usecase' id=ID '{'
+        (Name
+         |Description
+         |'requirements'':' requirement= [Requirement:QualifiedName](',' requirements+=[Requirement:QualifiedName])?         
+         |events+=Event 
+         |'depend'':' depend= [UseCase:QualifiedName](',' depends+=[UseCase:QualifiedName])?
+         |'performer' ':' actors+=[Actor:QualifiedName](',' actors+=[Actor:QualifiedName])*
+        )*
+    '}'
+;
+
+Event:
+    'event' id=ID '{'
+         (Name
+         |Description
+         |'action' ':' action=STRING
+         |'requirements'':' requirement= [FunctionalRequirement:QualifiedName](',' requirements+=[FunctionalRequirement:QualifiedName])?         
+         |'depend'':' depend= [Event:QualifiedName](',' depends+=[Event:QualifiedName])?
+        )*
+    '}';
+
+// Definição de Atores
+Actor:
+    'actor' id=QualifiedName '{'
+        (
+        Name
+        |'extends' superType=[Actor:QualifiedName]
+        )?
+    '}'
+;
