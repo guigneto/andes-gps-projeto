@@ -5,4 +5,7 @@
 node_modules/
 out/
 src/language/generated/
+static/bundle/
+static/monaco-editor-workers/
+static/worker/
 syntaxes/

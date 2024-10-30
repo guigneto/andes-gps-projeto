@@ -6,6 +6,9 @@
         "fileExtensions": [".andes"],
         "textMate": {
             "out": "syntaxes/andes.tmLanguage.json"
+        },
+        "monarch": {
+            "out": "syntaxes/andes.monarch.ts"
         }
     }],
     "out": "src/language/generated"

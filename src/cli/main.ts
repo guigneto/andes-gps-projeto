@@ -6,29 +6,23 @@ import { createAndesServices } from '../language/andes-module.js';
 import { extractAstNode } from './cli-util.js';
 import { generateJavaScript } from './generator.js';
 import { NodeFileSystem } from 'langium/node';
-import * as url from 'node:url';
-import * as fs from 'node:fs/promises';
-import * as path from 'node:path';
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-
-const packagePath = path.resolve(__dirname, '..', '..', 'package.json');
-const packageContent = await fs.readFile(packagePath, 'utf-8');
 
 export const generateAction = async (fileName: string, opts: GenerateOptions): Promise<void> => {
     const services = createAndesServices(NodeFileSystem).Andes;
     const model = await extractAstNode<Model>(fileName, services);
-    const generatedFilePath = generateJavaScript(model, fileName, opts.destination);
-    console.log(chalk.green(`JavaScript code generated successfully: ${generatedFilePath}`));
+    const generatedFilePath = generateJavaScript(model, fileName, opts.destination, opts);
+    console.log(chalk.green(`Andes done: ${generatedFilePath}`));
 };
 
 export type GenerateOptions = {
     destination?: string;
+    only_Documentation?:boolean,
 }
 
 export default function(): void {
     const program = new Command();
 
-    program.version(JSON.parse(packageContent).version);
+    program.version(require('../../package.json').version);
 
     const fileExtensions = AndesLanguageMetaData.fileExtensions.join(', ');
     program
@@ -38,5 +32,6 @@ export default function(): void {
         .description('generates JavaScript code that prints "Hello, {name}!" for each greeting in a source file')
         .action(generateAction);
 
-    program.parse(process.argv);
+    program.parse(process.argv);0
 }
+
