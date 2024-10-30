@@ -242,7 +242,6 @@ ${project?.miniworld}
         console.log("")
     }
 
-    
 
     private createCategoryFile(path_folder:string, label:string, position:string, description:string) {
         const value =`{
