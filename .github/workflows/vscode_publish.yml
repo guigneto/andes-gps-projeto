@@ -46,10 +46,6 @@ jobs:
       # Publish extension based on the branch
       - name: Publish to VSCode Marketplace
         run: |
-          if [[ -z "${{ secrets.VSCODE_TOKEN }}" ]]; then
-            echo "Error: VSCODE_TOKEN is not set."
-            exit 1
-          fi
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             vsce publish --pat ${{ secrets.VSCODE_TOKEN }}
           elif [[ "${{ github.ref }}" == "refs/heads/developing" ]]; then
