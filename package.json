@@ -1,12 +1,13 @@
 {
     "name": "andes",
     "publisher": "ledsifes",
+    "icon": "images/icon.png",
     "author": {
         "name": "LEDS-IFES",
         "email": "ledsifes@gmail.com"
     },
     "description": "Please enter a brief description here",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
