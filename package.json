@@ -6,7 +6,7 @@
         "name": "LEDS-IFES",
         "email": "ledsifes@gmail.com"
     },
-    "description": "Please enter a brief description here",
+    "description": "A vscode plugin that enable describing the software requirements, use cases, business rules and other constructions that allow to describe the problem domain of a software project. Besides Andes allows describing the software architects and this relations that will be developed to materialize the software requirements.",
     "version": "0.0.2",
     "license": "Apache-2.0",
     "repository": {
