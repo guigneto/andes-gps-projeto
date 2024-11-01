@@ -2,6 +2,7 @@ import { type Module, inject } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
 import { AndesGeneratedModule, AndesGeneratedSharedModule } from './generated/module.js';
 import { AndesValidator, registerValidationChecks } from './andes-validator.js';
+import { CustomScopeComputation } from './andes-scope.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -24,6 +25,9 @@ export type AndesServices = LangiumServices & AndesAddedServices
  * selected services, while the custom services must be fully specified.
  */
 export const AndesModule: Module<AndesServices, PartialLangiumServices & AndesAddedServices> = {
+    references:{
+        ScopeComputation: (services) => new CustomScopeComputation(services)
+    },
     validation: {
         AndesValidator: () => new AndesValidator()
     }

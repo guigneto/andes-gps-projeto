@@ -1,12 +1,18 @@
 import type { LanguageClientOptions, ServerOptions} from 'vscode-languageclient/node.js';
-import type * as vscode from 'vscode';
+import * as vscode from 'vscode';
 import * as path from 'node:path';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js';
+import { GenerateOptions, generateAction } from '../cli/main.js';
 
 let client: LanguageClient;
+let outputChannel: vscode.OutputChannel
 
 // This function is called when the extension is activated.
 export function activate(context: vscode.ExtensionContext): void {
+    outputChannel = vscode.window.createOutputChannel("andes", 'Andes')
+
+    registerGenerateCommands(context)
+
     client = startLanguageClient(context);
 }
 
@@ -34,7 +40,7 @@ function startLanguageClient(context: vscode.ExtensionContext): LanguageClient {
 
     // Options to control the language client
     const clientOptions: LanguageClientOptions = {
-        documentSelector: [{ scheme: '*', language: 'andes' }]
+        documentSelector: [{ scheme: 'file', language: 'andes' }]
     };
 
     // Create the language client and start the client.
@@ -48,4 +54,21 @@ function startLanguageClient(context: vscode.ExtensionContext): LanguageClient {
     // Start the client. This will also launch the server
     client.start();
     return client;
+}
+
+function registerGenerateCommands(context: vscode.ExtensionContext) : void {
+    const build_generate_functions = (opts: GenerateOptions) => {
+        return () => {
+            const filepath = vscode.window.activeTextEditor?.document.fileName
+            if(filepath) {
+                outputChannel.appendLine(`Code Generated Successfully`)
+                generateAction(filepath, opts).catch(
+                    (reason) => vscode.window.showErrorMessage(reason.message)
+                )
+            }
+        }
+    }  
+    const generateDocumentation = build_generate_functions({ only_Documentation: true })
+    context.subscriptions.push(vscode.commands.registerCommand("andes.generateDocumentation", generateDocumentation))
+
 }

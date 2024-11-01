@@ -7,7 +7,7 @@
         "email": "ledsifes@gmail.com"
     },
     "description": "A vscode plugin that enable describing the software requirements, use cases, business rules and other constructions that allow to describe the problem domain of a software project. Besides Andes allows describing the software architects and this relations that will be developed to materialize the software requirements.",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
@@ -63,10 +63,6 @@
         "vscode": "npm:@codingame/monaco-vscode-api@1.83.16",
         "vscode-languageclient": "~9.0.1",
         "vscode-languageserver": "~9.0.1"
-    },
-    "volta": {
-        "node": "18.19.1",
-        "npm": "10.2.4"
     },
     "displayName": "ANDES",
     "engines": {

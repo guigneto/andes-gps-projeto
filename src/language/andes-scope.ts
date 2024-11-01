@@ -16,6 +16,9 @@ export class CustomScopeComputation extends DefaultScopeComputation {
 
         const root = document.parseResult.value as Model
 
+        root.components.filter(isRequirements).map(
+            requirement => this.exportNode(requirement, default_global, document))    
+        
         const requirements = root.components.filter(isRequirements).flatMap(requirements => 
             requirements.requirements.map(requirement => this.descriptions.createDescription(requirement, `${requirement.$container.id}.${requirement.id}`, document)))
         
@@ -26,10 +29,7 @@ export class CustomScopeComputation extends DefaultScopeComputation {
             useCase.events.map(event => this.descriptions.createDescription(event, `${event.$container.id}.${event.id}`, document)))
         
         const actors = root.components.filter(isActor).flatMap(actor => 
-            this.descriptions.createDescription(actor, `${actor.id}`, document))
-                
-        root.components.filter(isRequirements).map(
-                requirement => this.exportNode(requirement, default_global, document))
+            this.descriptions.createDescription(actor, `${actor.id}`, document))     
 
         root.components.filter(isUseCase).map(
                     useCase => this.exportNode(useCase, default_global, document))
