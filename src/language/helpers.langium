@@ -17,3 +17,11 @@ fragment Name:
 fragment Priority:
     'priority' ':' priority=STRING
 ;
+
+fragment Comment:
+     comment = (SL_COMMENT |ML_COMMENT)
+;
+
+DATATYPE returns string:
+    ('string'|'integer'|'decimal'|'datetime'|'date'|'boolean'|'uuid'| 'email'| 'cpf'|'cnpj'|'zipcode'|'currency'|'mobilePhoneNumber'|'phoneNumber'| 'file'|'void')
+;

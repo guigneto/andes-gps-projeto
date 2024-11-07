@@ -1,6 +1,6 @@
 import { AstNode, AstNodeDescription, DefaultScopeComputation, LangiumDocument } from "langium";
 import { CancellationToken } from "vscode-languageclient";
-import { Model, isActor, isRequirements, isUseCase } from "./generated/ast.js";
+import { Model, isActor, isRequirements, isUseCase, isModule, isLocalEntity } from "./generated/ast.js";
 
 
 /**
@@ -27,9 +27,6 @@ export class CustomScopeComputation extends DefaultScopeComputation {
         
         const events = root.components.filter(isUseCase).flatMap(useCase => 
             useCase.events.map(event => this.descriptions.createDescription(event, `${event.$container.id}.${event.id}`, document)))
-        
-        const actors = root.components.filter(isActor).flatMap(actor => 
-            this.descriptions.createDescription(actor, `${actor.id}`, document))     
 
         root.components.filter(isUseCase).map(
                     useCase => this.exportNode(useCase, default_global, document))
@@ -39,8 +36,19 @@ export class CustomScopeComputation extends DefaultScopeComputation {
 
         root.components.filter(isUseCase).map(
                         usecase => usecase.events.map(event=>this.exportNode(event, default_global, document)))
-            
+        
+        root.components.filter(isModule).map(k =>
+            k.elements.map(e =>
+                this.exportNode(e, default_global, document)
+            )
+        )
+        
+        const entities = root.components.filter(isModule).flatMap(m =>
+            m.elements.filter(isLocalEntity).map(e =>
+                this.descriptions.createDescription(e, `${e.$container.name}.${e.name}`, document)
+            )
+        )
 
-        return default_global.concat(requirements, useCases, events, actors)
+        return default_global.concat(requirements, useCases, events, entities)
     }
 }

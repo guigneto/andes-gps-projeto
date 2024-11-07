@@ -4,6 +4,7 @@ import { createPath } from "../../generator-utils.js";
 import fs from "fs";
 import path from 'path'
 import { Dependency, Graph, Node, ActorRelation } from "../../graph/graph.js";
+import { DiagramGeneratorService } from "../docsaurus/ClassDiagram.js";
 
 export class DocksaurusService {
     
@@ -27,6 +28,7 @@ export class DocksaurusService {
         this.createIntroduction()
         this.createRequirements()
         this.createUSecaseDescription()
+        this.CreateClassDiagram()
         
     }
 
@@ -103,7 +105,7 @@ export class DocksaurusService {
         const useCases = this.model.components.filter(isUseCase)
         useCases.map(usecase => {
 
-            nodes.push({node: usecase.id.toUpperCase(),description:`${usecase.name_fragment}`, actors:usecase.actors.map(actor=>actor.ref?.name_fragment ??'')})
+            nodes.push({node: usecase.id.toUpperCase(),description:`${usecase.name_fragment}`, actors:usecase.actors.map(actor=>actor.ref?.name ??'')})
             
             if (usecase.depend){
                 dependencies.push({from: usecase.id.toUpperCase(),to:usecase.depend.ref?.id.toUpperCase()?? ""})                
@@ -112,7 +114,7 @@ export class DocksaurusService {
                 usecase.depends.map(itemDepended=> dependencies.push({from: usecase.id.toUpperCase(),to:itemDepended.ref?.id.toUpperCase()?? ""}))
             }
             if (usecase.actors){
-                usecase.actors.map(itemActor=> actorRelations.push({from: usecase.id.toUpperCase(),to:itemActor.ref?.name_fragment ?? ""}))
+                usecase.actors.map(itemActor=> actorRelations.push({from: usecase.id.toUpperCase(),to:itemActor.ref?.name ?? ""}))
             }
         })
            
@@ -255,7 +257,13 @@ ${project?.miniworld}
         
         fs.writeFileSync(path.join(path_folder, `_category_.json`), value)
     }
-    
 
-    
+    private CreateClassDiagram(){
+        const project = this.model.project
+        const module_name = project?.id.toLocaleLowerCase() ?? `module_name`
+        const module_path = createPath( this.ANALYSIS_PATH, module_name)     
+        const diagramGenerator = new DiagramGeneratorService(this.model, module_path);
+        diagramGenerator.generate();
+    }
+
 }
