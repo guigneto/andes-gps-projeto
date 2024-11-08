@@ -173,7 +173,7 @@ export class Graph {
             return 'Cycle detected. Topological sort not possible.';
         }
     
-        const headers = "| Item | Description | Dependencies | Enables | Atores |\n| --- | --- | --- | --- | --- |\n";
+        const headers = "| Item | Descrição | Dependências | Habilitados | Atores |\n| --- | --- | --- | --- | --- |\n";
         let rows = "";
     
         for (const node of sortedNodes) {

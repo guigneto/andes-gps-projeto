@@ -8,6 +8,6 @@ terminal STRING: /"[^"]*"|'[^']*'/;
 terminal BOOLEAN: 'true'|'false';
 terminal DATE: DIGIT DIGIT '/' DIGIT DIGIT'/'DIGIT DIGIT DIGIT DIGIT;
 terminal EmailAddress: /"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"/;
-hidden terminal ML_COMMENT: /\/\*[\s\S]*?\*\//;
-hidden terminal SL_COMMENT: /\/\/[^\n\r]*/;
+terminal ML_COMMENT: /\/\*[\s\S]*?\*\//;
+terminal SL_COMMENT: /\/\/[^\n\r]*/;
 

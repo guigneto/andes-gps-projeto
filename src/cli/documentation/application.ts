@@ -1,17 +1,14 @@
-import { Model } from "../../language/generated/ast.js"
-import {DocksaurusService} from "../documentation/docsaurus/DocksaurusService.js"
+import { Model } from "../../language/generated/ast.js";
+import { DocksaurusService } from "../documentation/docsaurus/DocksaurusService.js";
 
 export class DocumentationApplication {
+    private docksaurusService: DocksaurusService;
 
-    docksaurusService:DocksaurusService
-    
-    constructor (model: Model, target_folder:string){
-        
-        this.docksaurusService = new DocksaurusService(model, target_folder)
+    constructor(model: Model, targetFolder: string) {
+        this.docksaurusService = new DocksaurusService(model, targetFolder);
     }
 
-    public create(){
-        this.docksaurusService.create()
+    public create(): void {
+        this.docksaurusService.create();
     }
-
 }
