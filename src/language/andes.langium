@@ -26,8 +26,10 @@ AbstractElement:
 ;
 
 Module:
-    (Comment)?
     'module' name=QualifiedName '{'
-        (elements+=(AbstractElement | LocalEntity))*
+        | Description
+        (
+        elements+=(AbstractElement | LocalEntity)
+        )*
     '}'
 ; 

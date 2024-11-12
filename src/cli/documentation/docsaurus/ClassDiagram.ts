@@ -53,7 +53,7 @@ export class DiagramGeneratorService {
     private relationDiagram(relation: Relation, entity: LocalEntity, module: Module): string {
         const targetCardinality = isOneToOne(relation) ? "1" : "0..*";
         const sourceCardinality = isManyToMany(relation) ? "0..*" : "1";
-        const originModule = relation.type.ref?.$container.name.toLowerCase() !== module.name.toLowerCase() ? `${relation.type.ref?.$container.name}.` : "";
+        const originModule = relation.type.ref?.$container.name?.toLowerCase() !== module.name?.toLowerCase() ? `${relation.type.ref?.$container.name}.` : "";
 
         return `${entity.name} "${sourceCardinality}" -- "${targetCardinality}" ${originModule}${relation.type.ref?.name} : ${relation.name.toLowerCase()} >`;
     }
