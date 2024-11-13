@@ -266,4 +266,5 @@ ${project?.miniworld}
         diagramGenerator.generate();
     }
 
+
 }

@@ -11,11 +11,12 @@ export class DiagramGeneratorService {
     constructor(model: Model, targetFolder: string) {
         this.model = model;
         this.targetFolder = targetFolder;
-    }
+    } 
 
     public generate(): void {
+        this.CreateModuloEstrutural()
         const modules = this.model.components.filter(isModule);
-
+        
         for (const module of modules) {
             // Define o caminho do arquivo diretamente na pasta targetFolder, sem criar uma nova pasta
             const filePath = path.join(this.targetFolder, "classdiagram.puml");
@@ -57,4 +58,24 @@ export class DiagramGeneratorService {
 
         return `${entity.name} "${sourceCardinality}" -- "${targetCardinality}" ${originModule}${relation.type.ref?.name} : ${relation.name.toLowerCase()} >`;
     }
+
+    private CreateModuloEstrutural(){
+        const useCases = this.model.components.filter(isModule)
+
+        const value = `---
+sidebar_position: 4
+---
+# Modelo Estrutural
+${useCases.map(usecase=> this.createUseCaseContain(usecase)).join('\n')}
+`      
+fs.writeFileSync(path.join(this.targetFolder , `modeloestrutural.md`), value)
+
+}
+
+    private createUseCaseContain(modulo: Module):string {
+        return expandToStringWithNL`
+        ${modulo.description}
+        `
+    }
+
 }
