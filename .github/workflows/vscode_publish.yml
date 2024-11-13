@@ -61,3 +61,4 @@ jobs:
           else
             echo "Branch is neither main nor developing, skipping publish."
           fi
+          
