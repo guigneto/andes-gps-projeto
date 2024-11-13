@@ -69,13 +69,10 @@ sidebar_position: 4
 ${useCases.map(usecase=> this.createUseCaseContain(usecase)).join('\n')}
 `      
 fs.writeFileSync(path.join(this.targetFolder , `modeloestrutural.md`), value)
-
 }
-
     private createUseCaseContain(modulo: Module):string {
         return expandToStringWithNL`
         ${modulo.description}
         `
     }
-
 }
