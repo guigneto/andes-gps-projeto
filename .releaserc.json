@@ -1,5 +1,4 @@
 {
-  "repositoryUrl": "https://github.com/leds-org/leds-tools-andes.git",
   "branches": ["main", "developing"],
   "plugins": [
     [
