@@ -9,9 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       - uses: actions/checkout@v3
 
@@ -20,6 +17,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Build project
+      - name: Build project
+        run: |
+          npm run langium:generate
+          npm run build
 
       # Cache Node.js modules and npm cache for faster builds
       - name: Cache Node.js modules
@@ -32,27 +39,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm ci
-
-      # Build project
-      - name: Build project
-        run: |
-          npm run langium:generate
-          npm run build
-
       # Install vsce (VS Code Extension Manager)
       - name: Install vsce
         run: npm install -g @vscode/vsce
 
-      # Run semantic-release for versioning
-      - name: Release version
-        run: npx semantic-release
-
       # Publish extension based on the branch
       - name: Publish to VSCode Marketplace
-        if: ${{ success() }}
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             vsce publish --pat ${{ secrets.VSCODE_TOKEN }}
@@ -61,4 +53,3 @@ jobs:
           else
             echo "Branch is neither main nor developing, skipping publish."
           fi
-          
