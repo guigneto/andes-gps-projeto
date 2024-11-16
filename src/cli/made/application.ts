@@ -6,7 +6,7 @@ import { expandToString, expandToStringWithNL } from "langium/generate";
 
 
 type Dictionary = Record<string, any>;
-
+/* Cada caso de uso é mapeado para um EPIC e um Evento para um caso de uso */
 export class OrigamiApplication {
     model: Model
     target_folder:string
