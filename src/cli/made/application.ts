@@ -24,7 +24,7 @@ export class OrigamiApplication {
     public create(){
         
         const project = this.model.project?.id.toLocaleLowerCase() ?? "file"
-        fs.writeFileSync(path.join(this.MANAGEMENT_PATH , `${project}.origami`), this.createBacklog())
+        fs.writeFileSync(path.join(this.MANAGEMENT_PATH , `${project}.made`), this.createBacklog())
     
     }
 

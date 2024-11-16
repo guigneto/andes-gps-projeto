@@ -70,5 +70,17 @@ function registerGenerateCommands(context: vscode.ExtensionContext) : void {
     }  
     const generateDocumentation = build_generate_functions({ only_Documentation: true })
     context.subscriptions.push(vscode.commands.registerCommand("andes.generateDocumentation", generateDocumentation))
+    
+    const generateTestDocumentation = build_generate_functions({ only_testing: true })
+    
+    context.subscriptions.push(vscode.commands.registerCommand("andes.generateTestDocumentation", generateTestDocumentation))
+    
+    const generateManagementDocumentation = build_generate_functions({ only_made: true })
+    
+    context.subscriptions.push(vscode.commands.registerCommand("andes.generateManagementDocumentation", generateManagementDocumentation))
+
+    const generateAllDocumentation = build_generate_functions({ only_Documentation: true })
+    
+    context.subscriptions.push(vscode.commands.registerCommand("andes.all", generateAllDocumentation))
 
 }

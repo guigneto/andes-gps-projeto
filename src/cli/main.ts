@@ -17,6 +17,9 @@ export const generateAction = async (fileName: string, opts: GenerateOptions): P
 export type GenerateOptions = {
     destination?: string;
     only_Documentation?:boolean,
+    only_testing?: boolean,
+    only_made?:boolean,
+    all?:boolean
 }
 
 export default function(): void {

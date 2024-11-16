@@ -101,6 +101,18 @@
             {
                 "command": "andes.generateDocumentation",
                 "title": "Generate Project Documentation"
+            },
+            {
+                "command": "andes.generateTestDocumentation",
+                "title": "Generate Test Documentation with OpenAI"
+            },
+            {
+                "command": "andes.generateManagementDocumentation",
+                "title": "Generate Management Documentation"
+            },
+            {
+                "command": "andes.generateAllDocumentation",
+                "title": "Generate All"
             }
         ],
         "menus": {
@@ -108,11 +120,41 @@
                 {
                     "command": "andes.generateDocumentation",
                     "when": "editorLangId == andes"
+                },
+                {
+                    "command": "andes.generateTestDocumentation",
+                    "when": "editorLangId == andes"
+                }
+                ,
+                {
+                    "command": "andes.generateManagementDocumentation",
+                    "when": "editorLangId == andes"
+                },
+                {
+                    "command": "andes.generateAllDocumentation",
+                    "when": "editorLangId == andes"
                 }
             ],
             "editor/context": [
                 {
                     "command": "andes.generateDocumentation",
+                    "group": "z_commands",
+                    "when": "editorLangId == andes"
+                },
+                {
+                    "command": "andes.generateTestDocumentation",
+                    "group": "z_commands",
+                    "when": "editorLangId == andes"
+                }
+                ,
+                {
+                    "command": "andes.generateManagementDocumentation",
+                    "group": "z_commands",
+                    "when": "editorLangId == andes"
+                }
+                ,
+                {
+                    "command": "andes.generateAllDocumentation",
                     "group": "z_commands",
                     "when": "editorLangId == andes"
                 }
