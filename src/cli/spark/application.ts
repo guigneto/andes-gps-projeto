@@ -52,7 +52,7 @@ export class SparkApplication {
 
     private createEntity (entity:LocalEntity):string {
         return expandToStringWithNL`
-    entity ${entity.name} {
+      ${entity.is_abstract? "abstract ": "" }entity ${entity.name} ${entity.superType? `extends ${entity.superType.ref?.name}`: ""}{
       ${entity.attributes.map(value => `${value.name}: ${value.type}`)} 
       ${entity.enumentityatributes.map(value => `${value.name} uses ${value.type.ref?.name}`)} 
       ${entity.functions.map(value => `fun ${value.name} (${value.paramters.map(param=>param.element).join(',')}): ${value.response}`)} 
