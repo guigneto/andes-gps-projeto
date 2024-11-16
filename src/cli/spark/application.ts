@@ -1,15 +1,14 @@
-import { Event, Model, UseCase, isModule, isUseCase } from "../../language/generated/ast.js"
+import { Model, isModule } from "../../language/generated/ast.js"
 import fs from "fs";
 import path from 'path'
 import { createPath } from "../generator-utils.js";
-import { expandToString, expandToStringWithNL } from "langium/generate";
+import {  expandToStringWithNL } from "langium/generate";
 
 export class SparkApplication {
     model: Model
     target_folder:string
     SPARK_PATH: string
-    dict: Dictionary = {};
-    
+   
     constructor (model: Model, target_folder:string){
         this.model = model
         this.target_folder = target_folder  
@@ -35,7 +34,7 @@ export class SparkApplication {
             about: "${project?.description}"
             language: "${project?.architcture?? "nodefined"}"
         }
-        ${modules.map(module => `module ${module.name}`)}
+        ${modules.map(module => `module ${module.name}{}`).join("\n")}
         `
     }
 }
