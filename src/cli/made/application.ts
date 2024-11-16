@@ -7,7 +7,7 @@ import { expandToString, expandToStringWithNL } from "langium/generate";
 
 type Dictionary = Record<string, any>;
 /* Cada caso de uso é mapeado para um EPIC e um Evento para um caso de uso */
-export class OrigamiApplication {
+export class MadeApplication {
     model: Model
     target_folder:string
     MANAGEMENT_PATH: string
@@ -18,7 +18,7 @@ export class OrigamiApplication {
         this.target_folder = target_folder  
         
         fs.mkdirSync(this.target_folder, {recursive:true})        
-        this.MANAGEMENT_PATH = createPath(this.target_folder,'management') 
+        this.MANAGEMENT_PATH = createPath(this.target_folder,'made') 
     }
 
     public create(){

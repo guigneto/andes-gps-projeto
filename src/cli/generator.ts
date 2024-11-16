@@ -2,7 +2,7 @@ import { type Model } from '../language/generated/ast.js';
 import { DocumentationApplication } from './documentation/application.js';
 import { GenerateOptions } from './main.js';
 import {ArtifactApplication} from './artifacts/application.js'
-import {OrigamiApplication} from './made/application.js'
+import {MadeApplication} from './made/application.js'
 import path from 'path';
 
 export function generateJavaScript(model: Model, filePath: string, destination: string | undefined,opts: GenerateOptions): string {
@@ -10,7 +10,7 @@ export function generateJavaScript(model: Model, filePath: string, destination: 
     
     const documentationApplication = new DocumentationApplication(model,final_destination);
     const artifactApplication = new ArtifactApplication(model,final_destination);
-    const origamiApplication = new OrigamiApplication(model,final_destination); 
+    const madeApplication = new MadeApplication(model,final_destination); 
     
     if (opts.only_Documentation){
         documentationApplication.create()
@@ -22,13 +22,13 @@ export function generateJavaScript(model: Model, filePath: string, destination: 
     }
 
     if (opts.only_made){
-        origamiApplication.create()
+        madeApplication.create()
     }
 
     if (opts.all){
         documentationApplication.create();
         artifactApplication.create();
-        origamiApplication.create();
+        madeApplication.create();
     }
     
     
