@@ -1,9 +1,14 @@
 import axios from 'axios'
-
+import * as dotenv from 'dotenv';
 export  class OpenAI {
+
+  constructor (){
+    dotenv.config() 
+  }
   
    public async send (prompt: string ){
-        const apiKey = 'sk-proj-Px3enTtsC2WpnKJwNw42T3BlbkFJPN0gHPSVGQp5NnY5YLyo'
+         
+        const apiKey = process.env.OPENIA_KEY
 
         const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
