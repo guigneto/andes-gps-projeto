@@ -112,6 +112,10 @@
                 "title": "Generate Management Documentation to MADE"
             },
             {
+                "command": "andes.generateSparkDocument",
+                "title": "Generate Spark Document"
+            },
+            {
                 "command": "andes.generateAllDocumentation",
                 "title": "Generate All"
             }
@@ -128,6 +132,10 @@
                 },
                 {
                     "command": "andes.generateManagementDocumentation",
+                    "when": "editorLangId == andes"
+                },
+                {
+                    "command": "andes.generateSparkDocument",
                     "when": "editorLangId == andes"
                 },
                 {
@@ -148,6 +156,11 @@
                 },
                 {
                     "command": "andes.generateManagementDocumentation",
+                    "group": "z_commands",
+                    "when": "editorLangId == andes"
+                },
+                {
+                    "command": "andes.generateSparkDocument",
                     "group": "z_commands",
                     "when": "editorLangId == andes"
                 },

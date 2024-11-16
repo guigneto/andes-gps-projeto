@@ -79,7 +79,11 @@ function registerGenerateCommands(context: vscode.ExtensionContext) : void {
     
     context.subscriptions.push(vscode.commands.registerCommand("andes.generateManagementDocumentation", generateManagementDocumentation))
 
-    const generateAllDocumentation = build_generate_functions({ only_Documentation: true })
+    const generateSparkDocument = build_generate_functions({ only_spark: true })
+    
+    context.subscriptions.push(vscode.commands.registerCommand("andes.generateSparkDocument", generateSparkDocument))
+
+    const generateAllDocumentation = build_generate_functions({ all: true })
     
     context.subscriptions.push(vscode.commands.registerCommand("andes.all", generateAllDocumentation))
 
