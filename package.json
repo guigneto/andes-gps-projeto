@@ -108,7 +108,7 @@
             },
             {
                 "command": "andes.generateManagementDocumentation",
-                "title": "Generate Management Documentation"
+                "title": "Generate Management Documentation to MADE"
             },
             {
                 "command": "andes.generateAllDocumentation",
