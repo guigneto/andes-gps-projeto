@@ -51,8 +51,8 @@ async function genarateBDD (useCase: UseCase, destination: string){
         | ABC   | Nome | Desc      | -10        | 2024-01-01  | Bolsa1            | Res1      | Percentual não pode ser negativo |
     `
     const openAI = new OpenAI()
-    const response = await openAI.send(command)
-    
+    const response = await openAI.send(command,"")
+   
 
     fs.writeFileSync(path.join(destination, `/${useCase.name_fragment?.replaceAll(/\s/g,"_").toLocaleLowerCase()}.feature`), response)
         
