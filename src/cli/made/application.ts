@@ -1,4 +1,4 @@
-import { Event, Model, UseCase, isUseCase } from "../../language/generated/ast.js"
+import { Event, Model, Module, UseCase, isModule, isUseCase } from "../../language/generated/ast.js"
 import fs from "fs";
 import path from 'path'
 import { createPath } from "../generator-utils.js";
@@ -34,6 +34,10 @@ export class MadeApplication {
         const useCases = this.model.components.filter(isUseCase)
         const project = this.model.project
 
+        const modulesClassDiagram = this.model.components.filter(isModule)
+        
+        console.log (modulesClassDiagram.length)
+
         useCases.map(useCase=>  this.dict[useCase.id]=`${projectID}.${useCase.id.toLocaleLowerCase()}`)
 
         useCases.map(useCase=> useCase.events.map((event,index) =>this.dict[event.id]=`${projectID}.${useCase.id.toLocaleLowerCase()}_${index}`))
@@ -43,10 +47,43 @@ export class MadeApplication {
             name: "${project?.name_fragment?? "nodefined"}"
             description: "${project?.description}"
             
+            ${modulesClassDiagram.length > 0? this.createDiagramModel(modulesClassDiagram): " "}
+            
             ${useCases.map(useCase=>  this.createEPIC(projectID, useCase)).join(`\n`)}
 
         }
         `
+    }
+
+    private createDiagramModel (modules: Module[]):string {
+        return expandToStringWithNL`
+        epic domaindiagram {
+            name: "Create Problem Domain Modules"
+            description: "Create Problem Domain Modules"
+
+            ${modules.map(module => module.name? this.createStoryFromModule(module): "").join("\n")}
+                
+            
+        }        `
+    }
+
+    private createStoryFromModule(module: Module){
+        return expandToStringWithNL`
+            story createmodule-${module.name?.toLocaleLowerCase()}{
+                name: "Create database infrastruture to module ${module.name}"
+                description: "Create database infrastruture to ${module.name}"
+                
+                task createModule {
+                    name: "Implements domain modules"                    
+                }
+
+                task createRepository {
+                    name: "Implements data repository"
+                    depends: createmodule-${module.name?.toLocaleLowerCase()}.createModule
+                }
+            }
+        `
+        
     }
 
     private createEPICDependencie(item:UseCase|Event):string{
@@ -54,7 +91,7 @@ export class MadeApplication {
         const depends:string[] = []
         
         if (item.depend){
-            //depends.push(`${projectID}.${item.depend.ref?.id.toLocaleLowerCase()}`)
+            
             depends.push(`${this.dict[item.depend.ref?.id||""]}`)
         }
         item.depends.map(depend => depends.push(`${this.dict[depend.ref?.id||""]}`))
@@ -66,16 +103,23 @@ export class MadeApplication {
 
     private createEPIC(projectID: string, usecase:UseCase):string {
         return expandToStringWithNL`
-        epic ${usecase.id.toLocaleLowerCase()} {name:"${usecase.name_fragment}" description: "${usecase.description ?? ""}" ${this.createEPICDependencie(usecase)} }        
-        ${usecase.events.map((event,index) => this.createUserStory(event, usecase,index,projectID)).join(`\n`)}
+        epic ${usecase.id.toLocaleLowerCase()} {
+            name:"${usecase.name_fragment}" 
+            description: "${usecase.description ?? ""}" 
+            ${this.createEPICDependencie(usecase)}         
+            ${usecase.events.map((event,index) => this.createUserStory(event, usecase,index,projectID)).join(`\n`)}
+        }
         `
     }
 
     private createUserStory(event: Event, usecase:UseCase, index:number, projectID:string){
         // TODO pensar em como fazer assim
-        //userstory  ${event.id.toLocaleLowerCase()} {name:"${event.name_fragment}" description: "${event.description ?? ""}" epic: ${projectID}.${usecase.id.toLocaleLowerCase()} depends: ${this.createEPICDependencie(projectID,event)}}        
         return expandToStringWithNL`
-        userstory  ${usecase.id.toLocaleLowerCase()}_${index} {name:"${event.name_fragment}" description: "${event.description ?? ""}" epic: ${projectID}.${usecase.id.toLocaleLowerCase()} ${this.createEPICDependencie(event)}}
+        story  ${usecase.id.toLocaleLowerCase()}_${index} {
+            name:"${event.name_fragment}" 
+            description: "${event.description ?? ""}"  
+            ${this.createEPICDependencie(event)}
+        }
         `
     }
 }
