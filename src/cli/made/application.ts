@@ -69,17 +69,17 @@ export class MadeApplication {
 
     private createStoryFromModule(module: Module){
         return expandToStringWithNL`
-            story createmodule-${module.name?.toLocaleLowerCase()}{
+            story createmodule${module.name?.toLocaleLowerCase()}{
                 name: "Create database infrastruture to module ${module.name}"
                 description: "Create database infrastruture to ${module.name}"
                 
-                task createModule {
+                task createmodule {
                     name: "Implements domain modules"                    
                 }
 
-                task createRepository {
+                task createrepository {
                     name: "Implements data repository"
-                    depends: createmodule-${module.name?.toLocaleLowerCase()}.createModule
+                    depends: domaindiagram.createmodule${module.name?.toLocaleLowerCase()}.createmodule
                 }
             }
         `
