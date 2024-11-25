@@ -6,8 +6,8 @@ import { expandToString, expandToStringWithNL } from "langium/generate";
 
 
 type Dictionary = Record<string, any>;
-
-export class OrigamiApplication {
+/* Cada caso de uso é mapeado para um EPIC e um Evento para um caso de uso */
+export class MadeApplication {
     model: Model
     target_folder:string
     MANAGEMENT_PATH: string
@@ -18,13 +18,13 @@ export class OrigamiApplication {
         this.target_folder = target_folder  
         
         fs.mkdirSync(this.target_folder, {recursive:true})        
-        this.MANAGEMENT_PATH = createPath(this.target_folder,'management') 
+        this.MANAGEMENT_PATH = createPath(this.target_folder,'made') 
     }
 
     public create(){
         
         const project = this.model.project?.id.toLocaleLowerCase() ?? "file"
-        fs.writeFileSync(path.join(this.MANAGEMENT_PATH , `${project}.origami`), this.createBacklog())
+        fs.writeFileSync(path.join(this.MANAGEMENT_PATH , `${project}.made`), this.createBacklog())
     
     }
 
@@ -49,21 +49,24 @@ export class OrigamiApplication {
         `
     }
 
-    private createEPICDependencie(projectID: string, item:UseCase|Event):string{
+    private createEPICDependencie(item:UseCase|Event):string{
         
         const depends:string[] = []
+        
         if (item.depend){
             //depends.push(`${projectID}.${item.depend.ref?.id.toLocaleLowerCase()}`)
             depends.push(`${this.dict[item.depend.ref?.id||""]}`)
         }
         item.depends.map(depend => depends.push(`${this.dict[depend.ref?.id||""]}`))
-        return expandToString`${depends.map(value => `${value}`).join(`,`)}        
+
+
+        return expandToString`${depends.length >0 ? "depends:" :""} ${depends.map(value => `${value}`).join(`,`)}        
         `
     }
 
     private createEPIC(projectID: string, usecase:UseCase):string {
         return expandToStringWithNL`
-        epic ${usecase.id.toLocaleLowerCase()} {name:"${usecase.name_fragment}" description: "${usecase.description ?? ""}" depends: ${this.createEPICDependencie(projectID,usecase)} }        
+        epic ${usecase.id.toLocaleLowerCase()} {name:"${usecase.name_fragment}" description: "${usecase.description ?? ""}" ${this.createEPICDependencie(usecase)} }        
         ${usecase.events.map((event,index) => this.createUserStory(event, usecase,index,projectID)).join(`\n`)}
         `
     }
@@ -72,7 +75,7 @@ export class OrigamiApplication {
         // TODO pensar em como fazer assim
         //userstory  ${event.id.toLocaleLowerCase()} {name:"${event.name_fragment}" description: "${event.description ?? ""}" epic: ${projectID}.${usecase.id.toLocaleLowerCase()} depends: ${this.createEPICDependencie(projectID,event)}}        
         return expandToStringWithNL`
-        userstory  ${usecase.id.toLocaleLowerCase()}_${index} {name:"${event.name_fragment}" description: "${event.description ?? ""}" epic: ${projectID}.${usecase.id.toLocaleLowerCase()} depends: ${this.createEPICDependencie(projectID,event)}}
+        userstory  ${usecase.id.toLocaleLowerCase()}_${index} {name:"${event.name_fragment}" description: "${event.description ?? ""}" epic: ${projectID}.${usecase.id.toLocaleLowerCase()} ${this.createEPICDependencie(event)}}
         `
     }
 }
