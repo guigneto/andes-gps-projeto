@@ -22,6 +22,10 @@ fragment Comment:
      comment = (SL_COMMENT |ML_COMMENT)
 ;
 
+Architecture returns string:
+    ('python-django-mvc'|'java-springboot-mvc'|'csharp-minimal-api'|'csharp-clean-architecture'|'charp-pipeline')
+;
+
 DATATYPE returns string:
     ('string'|'integer'|'decimal'|'datetime'|'date'|'boolean'|'uuid'| 'email'| 'cpf'|'cnpj'|'zipcode'|'currency'|'mobilePhoneNumber'|'phoneNumber'| 'file'|'void')
 ;

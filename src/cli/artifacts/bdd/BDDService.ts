@@ -1,4 +1,3 @@
-import path from "path";
 import { Event, Model, isEvent, isUseCase } from "../../../language/generated/ast.js"
 import { OpenAI } from "../../generative_ai/application.js";
 import { createPath } from "../../generator-utils.js"
@@ -28,7 +27,7 @@ export class BDDService {
     }
 
     private async genarateBDD (event: Event){
-
+        
         const command = `
         Transforme o seguinte caso de uso em arquivos BDD com cenários outlines para casos de sucesso e erro.
         Para cada atributo gerar uma mensagem de erro personalizada quando ela não for informada.
@@ -58,12 +57,11 @@ export class BDDService {
             | sigla | nome | descrição | percentual | data_início | modalidades_bolsa | resolução | mensagem_erro               |
             | ABC   | Nome | Desc      | -10        | 2024-01-01  | Bolsa1            | Res1      | Percentual não pode ser negativo |
         `
-       
-        const response = await  this.openAI.send(command)
         
+        const response = await  this.openAI.send(command, this.target_folder)
         
         const usecaseFolder= createPath(this.FEATURE_PATH,event.$container.id.toLocaleLowerCase())   
-        fs.writeFileSync(path.join(this.FEATURE_PATH, `/${usecaseFolder}/${event.name_fragment?.replaceAll(/\s/g,"_").toLocaleLowerCase()}.feature`), response)
+        fs.writeFileSync(`/${usecaseFolder}/${event.name_fragment?.replaceAll(/\s/g,"_").toLocaleLowerCase()}.feature`, response)
 
     }   
 }

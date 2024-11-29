@@ -17,6 +17,7 @@ Project:
                |Description
                |'purpose' ':' purpose= STRING
                |'miniworld' ':' miniworld= STRING
+               |'Architecture'':' architcture=Architecture
             )* 
         '}'
 ;
