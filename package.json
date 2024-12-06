@@ -7,7 +7,7 @@
         "email": "ledsifes@gmail.com"
     },
     "description": "A vscode plugin that enable describing the software requirements, use cases, business rules and other constructions that allow to describe the problem domain of a software project. Besides Andes allows describing the software architects and this relations that will be developed to materialize the software requirements.",
-    "version": "0.3.9",
+    "version": "0.4.2",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
@@ -112,13 +112,14 @@
                 "title": "Generate Management Documentation to MADE"
             },
             {
-                "command": "andes.generateSparkDocument",
-                "title": "Generate Spark Document"
-            },
-            {
                 "command": "andes.generateAllDocumentation",
                 "title": "Generate All"
+            },
+            {
+                "command": "andes.generateSparkDocument",
+                "title": "Generate Spark Document"
             }
+
         ],
         "menus": {
             "commandPalette": [
@@ -135,13 +136,14 @@
                     "when": "editorLangId == andes"
                 },
                 {
-                    "command": "andes.generateSparkDocument",
+                    "command": "andes.generateAllDocumentation",
                     "when": "editorLangId == andes"
                 },
                 {
-                    "command": "andes.generateAllDocumentation",
+                    "command": "andes.generateSparkDocument",
                     "when": "editorLangId == andes"
                 }
+
             ],
             "editor/context": [
                 {
@@ -160,15 +162,16 @@
                     "when": "editorLangId == andes"
                 },
                 {
-                    "command": "andes.generateSparkDocument",
+                    "command": "andes.generateAllDocumentation",
                     "group": "z_commands",
                     "when": "editorLangId == andes"
                 },
                 {
-                    "command": "andes.generateAllDocumentation",
+                    "command": "andes.generateSparkDocument",
                     "group": "z_commands",
                     "when": "editorLangId == andes"
                 }
+
             ]
         }
     },

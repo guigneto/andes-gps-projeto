@@ -5,6 +5,7 @@ import fs from "fs";
 import path from 'path'
 import { Dependency, Graph, Node, ActorRelation } from "../../graph/graph.js";
 import { DiagramGeneratorService } from "../docsaurus/ClassDiagram.js";
+import { UseCaseGeneratorService } from "../docsaurus/ModelUseCases.js";
 
 export class DocksaurusService {
     
@@ -28,7 +29,7 @@ export class DocksaurusService {
         this.createIntroduction()
         this.createRequirements()
         this.createUSecaseDescription()
-        this.CreateClassDiagram()
+        this.CreateDiagrams()
         
     }
 
@@ -258,12 +259,14 @@ ${project?.miniworld}
         fs.writeFileSync(path.join(path_folder, `_category_.json`), value)
     }
 
-    private CreateClassDiagram(){
+    private CreateDiagrams(){
         const project = this.model.project
         const module_name = project?.id.toLocaleLowerCase() ?? `module_name`
         const module_path = createPath( this.ANALYSIS_PATH, module_name)     
         const diagramGenerator = new DiagramGeneratorService(this.model, module_path);
         diagramGenerator.generate();
+        const UseCasediagramGenerator = new UseCaseGeneratorService(this.model, module_path);
+        UseCasediagramGenerator.generate();
     }
 
 
