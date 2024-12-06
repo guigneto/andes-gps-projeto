@@ -112,13 +112,14 @@
                 "title": "Generate Management Documentation to MADE"
             },
             {
-                "command": "andes.generateSparkDocument",
-                "title": "Generate Spark Document"
-            },
-            {
                 "command": "andes.generateAllDocumentation",
                 "title": "Generate All"
+            },
+            {
+                "command": "andes.generateSparkDocument",
+                "title": "Generate Spark Document"
             }
+
         ],
         "menus": {
             "commandPalette": [
@@ -135,13 +136,14 @@
                     "when": "editorLangId == andes"
                 },
                 {
-                    "command": "andes.generateSparkDocument",
+                    "command": "andes.generateAllDocumentation",
                     "when": "editorLangId == andes"
                 },
                 {
-                    "command": "andes.generateAllDocumentation",
+                    "command": "andes.generateSparkDocument",
                     "when": "editorLangId == andes"
                 }
+
             ],
             "editor/context": [
                 {
@@ -160,15 +162,16 @@
                     "when": "editorLangId == andes"
                 },
                 {
-                    "command": "andes.generateSparkDocument",
+                    "command": "andes.generateAllDocumentation",
                     "group": "z_commands",
                     "when": "editorLangId == andes"
                 },
                 {
-                    "command": "andes.generateAllDocumentation",
+                    "command": "andes.generateSparkDocument",
                     "group": "z_commands",
                     "when": "editorLangId == andes"
                 }
+
             ]
         }
     },
