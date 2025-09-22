@@ -23,7 +23,7 @@ fragment Comment:
 ;
 
 Architecture returns string:
-    ('python-django-mvc'|'java-springboot-mvc'|'csharp-minimal-api'|'csharp-clean-architecture'|'charp-pipeline')
+    ('python'|'java'|'csharp-minimal-api'|'csharp-clean-architecture'|'charp-pipeline')
 ;
 
 DATATYPE returns string:

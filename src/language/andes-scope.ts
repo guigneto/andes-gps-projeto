@@ -1,6 +1,6 @@
 import { AstNode, AstNodeDescription, DefaultScopeComputation, LangiumDocument } from "langium";
 import { CancellationToken } from "vscode-languageclient";
-import { Model, isActor, isRequirements, isUseCase, isModule, isLocalEntity } from "./generated/ast.js";
+import { Model, isModule, isLocalEntity, FunctionalRequirement, NonFunctionalRequirement, BussinesRule } from "./generated/ast.js";
 
 
 /**
@@ -16,35 +16,39 @@ export class CustomScopeComputation extends DefaultScopeComputation {
 
         const root = document.parseResult.value as Model
 
-        root.components.filter(isRequirements).map(
-            requirement => this.exportNode(requirement, default_global, document))    
+        const array: (FunctionalRequirement | NonFunctionalRequirement | BussinesRule)[] = [];
+
+        root.Requirements?.fr.forEach(fr => array.push(fr));
+        root.Requirements?.nfr.forEach(nfr => array.push(nfr));
+        root.Requirements?.br.forEach(br => array.push(br));
+
+        array.map(requirement => this.exportNode(requirement, default_global, document))    
         
-        const requirements = root.components.filter(isRequirements).flatMap(requirements => 
-            requirements.requirements.map(requirement => this.descriptions.createDescription(requirement, `${requirement.$container.id}.${requirement.id}`, document)))
+        const requirements =array.map(requirement => this.descriptions.createDescription(requirement, `${requirement.$container.id}.${requirement.id}`, document))
         
-        const useCases = root.components.filter(isUseCase).map(useCase => 
+        const useCases = root.UseCase.map(useCase => 
                 this.descriptions.createDescription(useCase, `${useCase.id}`, document))
         
-        const events = root.components.filter(isUseCase).flatMap(useCase => 
+        const events = root.UseCase.flatMap(useCase => 
             useCase.events.map(event => this.descriptions.createDescription(event, `${event.$container.id}.${event.id}`, document)))
 
-        root.components.filter(isUseCase).map(
+        root.UseCase.map(
                     useCase => this.exportNode(useCase, default_global, document))
         
-        root.components.filter(isActor).map(
+        root.Actor.map(
             actor => this.exportNode(actor, default_global, document))
 
-        root.components.filter(isUseCase).map(
+        root.UseCase.map(
                         usecase => usecase.events.map(event=>this.exportNode(event, default_global, document)))
         
-        root.components.filter(isModule).map(k =>
-            k.elements.map(e =>
+        root.AbstractElement.filter(isModule).map(k =>
+            [...k.localEntities, ...k.enumXs, ...k.modules].map(e =>
                 this.exportNode(e, default_global, document)
             )
         )
         
-        const entities = root.components.filter(isModule).flatMap(m =>
-            m.elements.filter(isLocalEntity).map(e =>
+        const entities = root.AbstractElement.filter(isModule).flatMap(m =>
+            [...m.localEntities, ...m.enumXs, ...m.modules].filter(isLocalEntity).map(e =>
                 this.descriptions.createDescription(e, `${e.$container.name}.${e.name}`, document)
             )
         )

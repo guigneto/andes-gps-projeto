@@ -26,7 +26,7 @@ export type GenerateOptions = {
 export default function(): void {
     const program = new Command();
 
-    program.version(require('../../package.json').version);
+    // program.version(require('../../package.json').version);
 
     const fileExtensions = AndesLanguageMetaData.fileExtensions.join(', ');
     program
@@ -36,6 +36,6 @@ export default function(): void {
         .description('generates JavaScript code that prints "Hello, {name}!" for each greeting in a source file')
         .action(generateAction);
 
-    program.parse(process.argv);0
+    program.parse(process.argv);
 }
 

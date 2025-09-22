@@ -9,3 +9,8 @@ static/bundle/
 static/monaco-editor-workers/
 static/worker/
 syntaxes/
+generated-files/
+# Vitest cache
+coverage/
+.vitest/
+bin/

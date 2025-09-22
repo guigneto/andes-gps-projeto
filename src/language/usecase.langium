@@ -26,7 +26,7 @@ Event:
     'event' id=ID '{'
          (Name
          |Description
-         |'action' ':' action=STRING
+         |'action' ':' action=STRING(',' action+=STRING)?
          |'requirements'':' requirement= [FunctionalRequirement:QualifiedName](',' requirements+=[FunctionalRequirement:QualifiedName])?         
          |'depend'':' depend= [Event:QualifiedName](',' depends+=[Event:QualifiedName])?
          |'performer' ':' actors+=[Actor:QualifiedName](',' actors+=[Actor:QualifiedName])*

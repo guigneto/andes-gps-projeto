@@ -1,4 +1,4 @@
-import { Event, Model, isEvent, isUseCase } from "../../../language/generated/ast.js"
+import { Event, Model, isEvent } from "../../../language/generated/ast.js"
 import { OpenAI } from "../../generative_ai/application.js";
 import { createPath } from "../../generator-utils.js"
 import fs from "fs";
@@ -21,7 +21,7 @@ export class BDDService {
     }
 
     public create(){
-        const events = this.model.components.filter(isUseCase).flatMap(usecase => usecase.events.filter(isEvent))
+        const events = this.model.UseCase.flatMap(usecase => usecase.events.filter(isEvent))
 
         events.map(async event => await this.genarateBDD(event))
     }

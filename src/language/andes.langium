@@ -8,8 +8,13 @@ import 'entities'
 entry Model:    
     
     (   project = Project
-        |components+=(Requirements|UseCase|Actor|AbstractElement|ModuleImport)
-    )*;
+        |UseCase+=UseCase
+        |Actor+=Actor
+        |AbstractElement+=AbstractElement
+        |ModuleImport+=ModuleImport
+        |Requirements=Requirements
+    )*
+;
 
 Project:
         'overview' id=ID '{'
@@ -28,9 +33,10 @@ AbstractElement:
 
 Module:
     'module' name=QualifiedName '{'
-        | Description
-        (
-        elements+=(AbstractElement | LocalEntity)
+        ( Description 
+        | localEntities+=(LocalEntity)
+        | enumXs+=(EnumX)
+        | modules+= (Module)
         )*
     '}'
 ; 

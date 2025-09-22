@@ -12,8 +12,6 @@ ImportedEntity:
     name=ID
 ;
 
-
-
 LocalEntity:
     (Comment)?
     (is_abstract?='abstract')? 'entity' name=ID ('extends' superType=[Entity:QualifiedName])? '{'

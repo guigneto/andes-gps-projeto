@@ -1,4 +1,4 @@
-import { UseCase, isUseCase, type Model } from '../../language/generated/ast.js';
+import { UseCase, type Model } from '../../language/generated/ast.js';
 import * as path from 'node:path';
 import fs from "fs";
 import { extractDestinationAndName } from '../cli-util.js';
@@ -11,7 +11,7 @@ export function generateJavaScript(model: Model, filePath: string, destination: 
     const data = extractDestinationAndName(filePath, destination);
     const generatedFilePath = `${path.join(data.destination, data.name)}.js`;
 
-    const useCases = model.components.filter(isUseCase)
+    const useCases = model.UseCase
     const FEATURE_PATH = createPath(data.destination,'feature')
 
     useCases.map(async useCase => await genarateBDD(useCase, FEATURE_PATH))

@@ -1,0 +1,31 @@
+name: 🧪 Testes e Cobertura
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar testes com cobertura
+        run: npm test -- --coverage
+
+      - name: Validar cobertura mínima de 80%
+        run: |
+          sudo apt-get update && sudo apt-get install -y jq bc
+          COVERAGE=$(jq '.total.statements.pct' coverage/coverage-summary.json)
+          echo "Cobertura: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "❌ Cobertura abaixo de 80%."
+            exit 1
+          else
+            echo "✅ Cobertura adequada."
+          fi

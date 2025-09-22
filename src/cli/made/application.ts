@@ -1,4 +1,4 @@
-import { Event, Model, Module, UseCase, isModule, isUseCase } from "../../language/generated/ast.js"
+import { Event, Model, Module, UseCase, isModule } from "../../language/generated/ast.js"
 import fs from "fs";
 import path from 'path'
 import { createPath } from "../generator-utils.js";
@@ -30,27 +30,26 @@ export class MadeApplication {
 
     private createBacklog():string{
 
-        const projectID = this.model.project?.id.toLocaleLowerCase() ?? "nodefined"
-        const useCases = this.model.components.filter(isUseCase)
+        const projectID = this.model.project?.id ?? "Name"
+        const useCases = this.model.UseCase
         const project = this.model.project
 
-        const modulesClassDiagram = this.model.components.filter(isModule)
+        const modulesClassDiagram = this.model.AbstractElement.filter(isModule)
         
-        console.log (modulesClassDiagram.length)
-
         useCases.map(useCase=>  this.dict[useCase.id]=`${projectID}.${useCase.id.toLocaleLowerCase()}`)
 
         useCases.map(useCase=> useCase.events.map((event,index) =>this.dict[event.id]=`${projectID}.${useCase.id.toLocaleLowerCase()}_${index}`))
 
         return expandToStringWithNL`
+        project ${projectID}{
+            name: "${project?.name_fragment?? "nodefined"}"
+            description: "${project?.description}"
+        }
         backlog ${projectID}{
             name: "${project?.name_fragment?? "nodefined"}"
             description: "${project?.description}"
-            
             ${modulesClassDiagram.length > 0? this.createDiagramModel(modulesClassDiagram): " "}
-            
             ${useCases.map(useCase=>  this.createEPIC(projectID, useCase)).join(`\n`)}
-
         }
         `
     }
@@ -60,10 +59,7 @@ export class MadeApplication {
         epic domaindiagram {
             name: "Create Problem Domain Modules"
             description: "Create Problem Domain Modules"
-
             ${modules.map(module => module.name? this.createStoryFromModule(module): "").join("\n")}
-                
-            
         }        `
     }
 
